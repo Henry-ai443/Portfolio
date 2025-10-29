@@ -1,0 +1,17 @@
+.contact-section {
+  padding: 100px 20px;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  text-align: center;
+}
+
+.contact-icons a {
+  color: var(--text-dim);
+  font-size: 2rem;
+  margin: 0 15px;
+  transition: color 0.3s;
+}
+
+.contact-icons a:hover {
+  color: var(--accent);
+}
