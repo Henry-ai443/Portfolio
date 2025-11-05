@@ -7,9 +7,6 @@ function About() {
         <h2 className="section-title">About Me</h2>
 
         <div className="about-content">
-          <div className="about-image">
-            <img src="/Henry.jpg" alt="Henry" />
-          </div>
 
           <div className="about-text">
             <p>
