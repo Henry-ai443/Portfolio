@@ -10,7 +10,7 @@ function About() {
 
           <div className="about-text">
             <p>
-              I’m a passionate Software Engineer specializing in web and mobile development. I enjoy building sleek, modern applications and exploring new technologies to create innovative solutions.
+              I’m a passionate Software Engineer and graphics designer specializing in web and mobile development. I enjoy building sleek, modern applications and exploring new technologies to create innovative solutions.
             </p>
             <p>
               I love experimenting with frameworks like React, React Native, Node.js, and more. I also enjoy contributing to open-source projects and continuously improving my skills.

@@ -19,7 +19,7 @@
   flex-direction: column; /* stacked layout */
   align-items: center;
   gap: 20px;
-  animation: fadeInUp 1s ease forwards;
+  animation: fadeInUp 5s ease forwards;
 }
 
 .hero-image {
