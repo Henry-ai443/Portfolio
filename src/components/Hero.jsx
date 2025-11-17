@@ -11,7 +11,7 @@ function Hero() {
         <div className="hero-text">
           <h1 className="hero-title">Hi, I’m Engineer Henry</h1>
           <p className="hero-intro">
-            I am a passionate Software Engineer specializing in web and mobile development. 
+            I am a passionate Software Engineer and graphics designer specializing in web and mobile development plus grpgics design. 
             I enjoy building sleek, modern applications and exploring new technologies to create innovative solutions.
           </p>
           <small><strong>Turning Code Into Constellations</strong></small>
