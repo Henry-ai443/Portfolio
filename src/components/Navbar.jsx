@@ -23,14 +23,15 @@ function NavigationBar() {
         <NavLink href="#home" icon={<FaHome />} onClick={toggleSidebar}>
           Home
         </NavLink>
-        <NavLink href="#about" icon={<FaUser />} onClick={toggleSidebar}>
-          About
-        </NavLink>
+          <NavLink href="#projects" icon={<FaFolderOpen />} onClick={toggleSidebar}>
+          Projects
+        </NavLink>  
         <NavLink href="#skills" icon={<FaCode />} onClick={toggleSidebar}>
           Skills
         </NavLink>
-        <NavLink href="#projects" icon={<FaFolderOpen />} onClick={toggleSidebar}>
-          Projects
+
+        <NavLink href="#about" icon={<FaUser />} onClick={toggleSidebar}>
+          About
         </NavLink>
         <NavLink href="#contact" icon={<FaEnvelope />} onClick={toggleSidebar}>
           Contact
