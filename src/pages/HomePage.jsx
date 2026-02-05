@@ -12,9 +12,9 @@ export default function HomePage() {
       <NavigationBar />
       <div className="full-width-container">
         <Hero />
-        <About />
-        <Skills />
         <Projects />
+        <Skills />
+        <About />
         <Contact />
         <Footer />
       </div>
