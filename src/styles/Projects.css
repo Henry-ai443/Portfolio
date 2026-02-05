@@ -1,61 +1,172 @@
 .projects-section {
-  padding: 100px 20px;
+  padding: var(--section-padding) 1.5rem;
   background: var(--bg-dark);
   color: var(--text-light);
 }
 
-.section-title {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 50px;
-  font-weight: 600;
+.projects-section .section-title {
+  margin-bottom: 0.5rem;
 }
 
-.projects-container {
+.projects-section .section-subtitle {
+  margin-bottom: 2rem;
+}
+
+.projects-loading,
+.projects-error,
+.projects-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 3rem 1.5rem;
+  font-size: 1rem;
+}
+
+.projects-error code {
+  background: var(--glass-bg);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+}
+
+.category-tabs {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 30px;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.category-tab {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--border-light);
+  background: var(--glass-bg);
+  color: var(--text-muted);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.category-tab:hover {
+  color: var(--text-light);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.category-tab.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.projects-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  max-width: var(--content-max);
+  margin: 0 auto;
 }
 
 .project-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
   text-decoration: none;
   color: var(--text-light);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--blur-strength));
+  background: var(--bg-elevated);
   border: 1px solid var(--border-light);
-  border-radius: 12px;
-  padding: 15px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  max-width: 400px; /* prevents it from being too wide */
-  width: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .project-image-container {
   width: 100%;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .project-image {
   width: 100%;
-  height: auto;
-  max-height: 300px; /* controls size on big screens */
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
   display: block;
+  transition: transform 0.4s ease;
+}
+
+.project-card:hover .project-image {
+  transform: scale(1.03);
+}
+
+.project-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-size: 0.875rem;
+}
+
+.project-content {
+  padding: 1.25rem;
+}
+
+.project-category {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
 }
 
 .project-title {
-  margin-top: 15px;
-  font-size: 1.2rem;
-  font-weight: 500;
-  text-align: center;
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.project-description {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.project-tag {
+  font-size: 0.6875rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--glass-bg);
+  border-radius: 4px;
+  color: var(--text-dim);
+}
+
+.project-card-no-link {
+  cursor: default;
+}
+
+.project-card-no-link:hover {
+  transform: none;
 }

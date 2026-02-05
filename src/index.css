@@ -1,18 +1,27 @@
 /* ===========================
-   GLOBAL STYLES
+   GLOBAL STYLES — Professional Portfolio
 =========================== */
 
 :root {
-  --bg-dark: #0b0b0d;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --text-light: #ffffff;
-  --text-dim: #b0b0b0;
-  --accent: #0d6efd;
-  --border-light: rgba(255, 255, 255, 0.1);
-  --blur-strength: 12px;
+  --bg-dark: #0a0a0c;
+  --bg-elevated: #111113;
+  --bg-section: #0d0d0f;
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --text-light: #f5f5f7;
+  --text-muted: #a1a1a6;
+  --text-dim: #6e6e73;
+  --accent: #0a84ff;
+  --accent-soft: rgba(10, 132, 255, 0.15);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --blur-strength: 16px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --section-padding: clamp(4rem, 10vw, 6rem);
+  --content-max: 1100px;
 }
 
-/* ===== BODY ===== */
+/* ===== BASE ===== */
 html {
   scroll-behavior: smooth;
 }
@@ -20,119 +29,136 @@ html {
 body {
   background-color: var(--bg-dark);
   color: var(--text-light);
-  font-family: "Poppins", sans-serif;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ===========================
-   TYPOGRAPHY
-=========================== */
+/* ===== TYPOGRAPHY ===== */
 h1, h2, h3, h4 {
   font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .text-dim {
   color: var(--text-dim);
 }
 
-/* ===========================
-   GLASS EFFECT
-=========================== */
+/* ===== GLASS EFFECT ===== */
 .glass {
   background: var(--glass-bg);
   backdrop-filter: blur(var(--blur-strength));
   -webkit-backdrop-filter: blur(var(--blur-strength));
   border: 1px solid var(--border-light);
-  border-radius: 12px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
 }
 
-/* ===========================
-   SECTIONS
-=========================== */
+/* ===== SECTIONS ===== */
 section {
-  padding: 100px 15px;
+  padding: var(--section-padding) 1.5rem;
   position: relative;
   z-index: 1;
+  max-width: 100%;
 }
 
-/* ===========================
-   NAVBAR (Bootstrap override)
-=========================== */
-.navbar {
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--blur-strength));
-  border-bottom: 1px solid var(--border-light);
-  transition: background 0.3s ease-in-out;
-}
-
-.navbar-brand {
-  letter-spacing: 1px;
-  color: var(--text-light) !important;
+.section-title {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
   font-weight: 600;
+  letter-spacing: -0.03em;
+  text-align: center;
+  margin: 0 0 0.5rem;
+  color: var(--text-light);
 }
 
-.navbar-dark .navbar-nav .nav-link {
-  color: var(--text-dim);
-  transition: color 0.3s ease;
+.section-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1rem;
+  max-width: 540px;
+  margin: 0 auto 3rem;
+  line-height: 1.6;
 }
 
-.navbar-dark .navbar-nav .nav-link:hover,
-.navbar-dark .navbar-nav .nav-link.active {
-  color: var(--accent);
+/* ===== BUTTONS & CTAs ===== */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-family: inherit;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* ===========================
-   BUTTONS
-=========================== */
+.cta-button:hover {
+  background: #409cff;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(10, 132, 255, 0.35);
+}
+
+.cta-button:active {
+  transform: translateY(0);
+}
+
 .btn-outline-primary {
   color: var(--text-light);
-  border-color: var(--accent);
+  border: 1px solid var(--accent);
+  background: transparent;
 }
 
 .btn-outline-primary:hover {
-  background-color: var(--accent);
-  color: var(--text-light);
+  background: var(--accent-soft);
+  color: var(--accent);
   border-color: var(--accent);
 }
 
-/* ===========================
-   SCROLLBAR (optional)
-=========================== */
+/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--accent);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 10px;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
-/* ===========================
-   FULL-WIDTH CONTAINER
-=========================== */
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+/* ===== LAYOUT ===== */
 .full-width-container {
   width: 100%;
   margin: 0;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .full-width-container section {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 @media (max-width: 576px) {
   .full-width-container section {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }

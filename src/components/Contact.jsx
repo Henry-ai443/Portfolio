@@ -4,8 +4,8 @@ import { FaEnvelope, FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 function Contact() {
   return (
     <section id="contact" className="contact-section">
-      <h2 className="section-title">Contact Me</h2>
-      <p>Feel free to reach out via any of the platforms below:</p>
+      <h2 className="section-title">Get in Touch</h2>
+      <p>I’d love to hear from you — reach out via any platform below.</p>
       <div className="contact-icons">
         <a href="mailto:your.email@example.com">
           <FaEnvelope />

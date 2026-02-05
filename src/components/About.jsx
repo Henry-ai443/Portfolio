@@ -5,9 +5,11 @@ function About() {
     <section id="about" className="about-section">
       <div className="container">
         <h2 className="section-title">About Me</h2>
+        <p className="section-subtitle">
+          A bit about my background and what I enjoy building.
+        </p>
 
         <div className="about-content">
-
           <div className="about-text">
             <p>
               I’m a passionate Software Engineer and graphics designer specializing in web and mobile development. I enjoy building sleek, modern applications and exploring new technologies to create innovative solutions.

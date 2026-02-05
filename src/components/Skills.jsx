@@ -1,64 +1,184 @@
+import { useState, useRef, useEffect } from "react";
 import "../styles/Skills.css";
 
-const techStack = [
-  { name: "Python", color: "#3776AB" },
-  { name: "JavaScript", color: "#F7DF1E", textColor: "#000" },
-  { name: "PHP", color: "#777BB4" },
-  { name: "HTML5", color: "#E34F26" },
-  { name: "CSS3", color: "#1572B6" },
-  { name: "Django", color: "#092E20" },
-  { name: "Flask", color: "#000000" },
-  { name: "Bootstrap", color: "#7952B3" },
-  { name: "jQuery", color: "#0769AD" },
-  { name: "Laravel", color: "#FF2D20" },
-  { name: "Node.js", color: "#339933" },
-  { name: "React", color: "#61DAFB", textColor: "#000" },
-  { name: "Vue.js", color: "#4FC08D", textColor: "#000" },
-  { name: "Express.js", color: "#404D59" },
-  { name: "MySQL", color: "#4479A1" },
-  { name: "MariaDB", color: "#003545" },
-  { name: "PostgreSQL", color: "#4169E1" },
-  { name: "SQLite", color: "#003B57" },
-  { name: "MongoDB", color: "#47A248" },
-  { name: "Git", color: "#F05032" },
-  { name: "GitHub", color: "#181717" },
-  { name: "VS Code", color: "#007ACC" },
-  { name: "Figma", color: "#F24E1E" },
-  { name: "Postman", color: "#FF6C37" },
-  { name: "XAMPP", color: "#FB7A24" },
-  { name: "Netlify", color: "#00C7B7" },
-  { name: "Linux", color: "#FCC624", textColor: "#000" },
-  { name: "Windows", color: "#0078D6" },
-  { name: "Kali Linux", color: "#557C94" },
-  { name: "Ubuntu", color: "#E95420" },
+const ICON_CDN = "https://cdn.simpleicons.org";
+
+const skillCards = [
+  {
+    id: "languages",
+    title: "Languages",
+    items: [
+      { name: "JavaScript", color: "#F7DF1E", textColor: "#000", badge: true, icon: "javascript", description: "Scripting language for web and server-side logic." },
+      { name: "Node.js", color: "#339933", badge: true, icon: "nodedotjs", description: "JavaScript runtime for building fast, scalable backends." },
+      { name: "Python", color: "#3776AB", badge: true, icon: "python", description: "General-purpose language for backend, data, and automation." },
+    ],
+  },
+  {
+    id: "databases",
+    title: "Databases",
+    items: [
+      { name: "MongoDB", color: "#47A248", badge: true, icon: "mongodb", description: "NoSQL document database for flexible, scalable data." },
+      { name: "MySQL", color: "#4479A1", badge: true, icon: "mysql", description: "Relational database for structured data and complex queries." },
+    ],
+  },
+  {
+    id: "frontend",
+    title: "Frontend",
+    items: [
+      { name: "JavaScript", color: "#F7DF1E", textColor: "#000", icon: "javascript", description: "Powers interactivity and dynamic UIs in the browser." },
+      { name: "HTML5", color: "#E34F26", icon: "html5", description: "Markup and structure for web pages and apps." },
+      { name: "CSS3", color: "#1572B6", icon: "css3", description: "Styling, layout, and responsive design." },
+    ],
+  },
+  {
+    id: "backend",
+    title: "Backend",
+    items: [
+      { name: "Node.js", color: "#339933", icon: "nodedotjs", description: "Server-side JavaScript with Express and REST APIs." },
+      { name: "Python", color: "#3776AB", icon: "python", description: "Backend logic with Django, Flask, and scripting." },
+    ],
+  },
+  {
+    id: "frameworks",
+    title: "Frameworks & Libraries",
+    items: [
+      { name: "React", color: "#61DAFB", textColor: "#000", badge: true, icon: "react", description: "Library for building component-based UIs and SPAs." },
+      { name: "React Native", color: "#61DAFB", textColor: "#000", badge: true, icon: "react", description: "Cross-platform mobile apps with React and native code." },
+      { name: "Django REST Framework", color: "#092E20", badge: true, icon: "django", description: "REST APIs and backend logic with Django and DRF." },
+    ],
+  },
+  {
+    id: "tools",
+    title: "Tools",
+    items: [
+      { name: "Figma", color: "#F24E1E", icon: "figma", description: "UI/UX design, prototypes, and handoff to development." },
+      { name: "Canva", color: "#00C4CC", icon: "canva", description: "Graphics and visual content for branding and marketing." },
+      { name: "Git", color: "#F05032", icon: "git", description: "Version control and collaboration on code." },
+      { name: "GitHub", color: "#181717", icon: "github", description: "Hosting repos, code review, and project management." },
+    ],
+  },
 ];
 
+function SkillLogo({ icon, color, name }) {
+  const url = `${ICON_CDN}/${icon}/${color.replace("#", "")}`;
+  return (
+    <img
+      src={url}
+      alt=""
+      className="skills-badge-icon"
+      width={20}
+      height={20}
+      loading="lazy"
+    />
+  );
+}
+
 export default function Skills() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollRef = useRef(null);
+
+  const scrollToCard = (index) => {
+    const i = Math.max(0, Math.min(index, skillCards.length - 1));
+    setCurrentIndex(i);
+    const el = scrollRef.current;
+    if (el) {
+      const card = el.querySelector(`[data-card-index="${i}"]`);
+      card?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const scrollLeft = el.scrollLeft;
+      const cardWidth = el.offsetWidth;
+      const index = Math.round(scrollLeft / cardWidth);
+      setCurrentIndex(Math.max(0, Math.min(index, skillCards.length - 1)));
+    };
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <section id="skills">
-      <h2 className="section-title">🛠️ Tech Stack</h2>
-      <div className="skills-track-wrapper">
-        <div className="skills-track">
-          {techStack.map((tech, index) => (
-            <span
-              key={index}
-              className="skill-badge"
-              style={{ backgroundColor: tech.color, color: tech.textColor || "#fff" }}
-            >
-              {tech.name}
-            </span>
-          ))}
-          {/* Duplicate once for smooth infinite scroll */}
-          {techStack.map((tech, index) => (
-            <span
-              key={"dup-" + index}
-              className="skill-badge"
-              style={{ backgroundColor: tech.color, color: tech.textColor || "#fff" }}
-            >
-              {tech.name}
-            </span>
-          ))}
+      <h2 className="section-title">Tech Stack</h2>
+      <p className="section-subtitle">
+        Languages, frameworks, databases, and tools I work with.
+      </p>
+
+      <div className="skills-carousel">
+        <button
+          type="button"
+          className="skills-carousel-btn skills-carousel-btn-prev"
+          onClick={() => scrollToCard(currentIndex - 1)}
+          aria-label="Previous card"
+        >
+          ‹
+        </button>
+
+        <div className="skills-carousel-viewport" ref={scrollRef}>
+          <div className="skills-carousel-track">
+            {skillCards.map((card, index) => (
+              <article
+                key={card.id}
+                className="skills-card"
+                data-card-index={index}
+              >
+                <h3 className="skills-card-title">{card.title}</h3>
+                <div className="skills-card-badges">
+                  {card.items.map((item, i) => (
+                    <span
+                      key={i}
+                      className={`skills-badge ${item.badge ? "skills-badge-highlight" : ""}`}
+                      style={{
+                        backgroundColor: item.color,
+                        color: item.textColor || "#fff",
+                      }}
+                    >
+                      {item.icon && (
+                        <SkillLogo
+                          icon={item.icon}
+                          color={item.textColor ? "#000" : "#fff"}
+                        />
+                      )}
+                      <span className="skills-badge-text">{item.name}</span>
+                    </span>
+                  ))}
+                </div>
+                <dl className="skills-card-descriptions">
+                  {card.items.map((item, i) => (
+                    <div key={i} className="skills-desc-item">
+                      <dt className="skills-desc-name">{item.name}</dt>
+                      <dd className="skills-desc-text">{item.description}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </article>
+            ))}
+          </div>
         </div>
+
+        <button
+          type="button"
+          className="skills-carousel-btn skills-carousel-btn-next"
+          onClick={() => scrollToCard(currentIndex + 1)}
+          aria-label="Next card"
+        >
+          ›
+        </button>
+      </div>
+
+      <div className="skills-carousel-dots">
+        {skillCards.map((_, index) => (
+          <button
+            key={index}
+            type="button"
+            className={`skills-dot ${currentIndex === index ? "active" : ""}`}
+            onClick={() => scrollToCard(index)}
+            aria-label={`Go to card ${index + 1}`}
+          />
+        ))}
       </div>
     </section>
   );
