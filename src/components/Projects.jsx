@@ -1,14 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { API_BASE } from "../config/api";
 import "../styles/Projects.css";
 
-function Projects() {
+export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeCategory, setActiveCategory] = useState("all");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollRef = useRef(null);
 
+  // Fetch projects and categories
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,10 +53,39 @@ function Projects() {
           return String(catId) === String(activeCategory);
         });
 
+  // Reset carousel index when category changes
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [activeCategory]);
+
+  const scrollToCard = (index) => {
+    const i = Math.max(0, Math.min(index, filteredProjects.length - 1));
+    setCurrentIndex(i);
+    const el = scrollRef.current;
+    if (el) {
+      const card = el.querySelector(`[data-card-index="${i}"]`);
+      card?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
+  };
+
+  // Update currentIndex on manual scroll
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const scrollLeft = el.scrollLeft;
+      const cardWidth = el.offsetWidth;
+      const index = Math.round(scrollLeft / cardWidth);
+      setCurrentIndex(Math.max(0, Math.min(index, filteredProjects.length - 1)));
+    };
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [filteredProjects]);
+
   if (loading) {
     return (
       <section id="projects" className="projects-section">
-        <h2 className="section-title">My Projects</h2>
+        <h2 className="section-title">Projects</h2>
         <div className="projects-loading">Loading projects...</div>
       </section>
     );
@@ -61,11 +94,8 @@ function Projects() {
   if (error) {
     return (
       <section id="projects" className="projects-section">
-        <h2 className="section-title">My Projects</h2>
-        <div className="projects-error">
-          Unable to load projects. Make sure the API is running at{" "}
-          <code>http://localhost:5000</code>
-        </div>
+        <h2 className="section-title">Projects</h2>
+        <div className="projects-error">Unable to load projects.</div>
       </section>
     );
   }
@@ -74,9 +104,10 @@ function Projects() {
     <section id="projects" className="projects-section">
       <h2 className="section-title">Projects</h2>
       <p className="section-subtitle">
-        Selected work across web and mobile.
+        Browse by category, explore with focus.
       </p>
 
+      {/* Category tabs */}
       {categories.length > 0 && (
         <div className="category-tabs">
           <button
@@ -97,73 +128,93 @@ function Projects() {
         </div>
       )}
 
-      <div className="projects-container">
-        {filteredProjects.length === 0 ? (
-          <p className="projects-empty">No projects to display yet.</p>
-        ) : (
-          filteredProjects.map((project) => (
-            <ProjectCard key={project._id} project={project} />
-          ))
-        )}
-      </div>
+      {/* Carousel */}
+      {filteredProjects.length === 0 ? (
+        <p className="projects-empty">No projects in this category yet.</p>
+      ) : (
+        <div className="projects-carousel">
+          <button
+            type="button"
+            className="projects-carousel-btn projects-carousel-btn-prev"
+            onClick={() => scrollToCard(currentIndex - 1)}
+            aria-label="Previous project"
+          >
+            ‹
+          </button>
+
+          <div className="projects-carousel-viewport" ref={scrollRef}>
+            <div className="projects-carousel-track">
+              {filteredProjects.map((project, index) => (
+                <article
+                  key={project._id}
+                  className="project-card"
+                  data-card-index={index}
+                >
+                  <div className="project-image-container">
+                    {project.images?.[0]?.url ? (
+                      <img
+                        src={project.images[0].url}
+                        alt={project.images[0]?.alt || project.title}
+                        className="project-image"
+                      />
+                    ) : (
+                      <div className="project-image-placeholder">
+                        No image available
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="project-content">
+                    <h3 className="project-title">{project.title}</h3>
+
+                    {/* Internal detail page */}
+                    <Link
+                      to={`/projects/${project.slug || project._id}`}
+                      className="project-link"
+                    >
+                      View project →
+                    </Link>
+
+                    {/* Live project external link */}
+                    {project.liveLink && (
+                      <a
+                        href={project.liveLink}
+                        className="project-link live-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Live demo →
+                      </a>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="projects-carousel-btn projects-carousel-btn-next"
+            onClick={() => scrollToCard(currentIndex + 1)}
+            aria-label="Next project"
+          >
+            ›
+          </button>
+
+          {/* Pagination dots */}
+          <div className="projects-carousel-dots">
+            {filteredProjects.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                className={`projects-dot ${currentIndex === index ? "active" : ""}`}
+                onClick={() => scrollToCard(index)}
+                aria-label={`Go to project ${index + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
-
-function ProjectCard({ project }) {
-  const imageUrl = project.images?.[0]?.url || null;
-  const link = project.link || project.repoUrl;
-
-  const cardContent = (
-    <>
-      <div className="project-image-container">
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={project.images[0]?.alt || project.title}
-            className="project-image"
-          />
-        ) : (
-          <div className="project-image-placeholder">No image</div>
-        )}
-      </div>
-      <div className="project-content">
-        {project.category?.name && (
-          <span className="project-category">{project.category.name}</span>
-        )}
-        <h3 className="project-title">{project.title}</h3>
-        {project.description && (
-          <p className="project-description">{project.description}</p>
-        )}
-        {(project.techStack?.length > 0 || project.additionalTools?.length > 0) && (
-          <div className="project-tags">
-            {[...(project.techStack || []), ...(project.additionalTools || [])].map(
-              (tech, i) => (
-                <span key={i} className="project-tag">
-                  {tech}
-                </span>
-              )
-            )}
-          </div>
-        )}
-      </div>
-    </>
-  );
-
-  if (link) {
-    return (
-      <a
-        href={link}
-        className="project-card"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {cardContent}
-      </a>
-    );
-  }
-
-  return <div className="project-card project-card-no-link">{cardContent}</div>;
-}
-
-export default Projects;
