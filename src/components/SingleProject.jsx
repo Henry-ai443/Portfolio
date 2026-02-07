@@ -74,7 +74,7 @@ export default function SingleProject() {
             <h3 style={{color: "#0c1121"}}>Technologies & Tools</h3>
             <ul className="project-tags-list">
               {project.techStack?.map((tech, i) => (
-                <li key={i} className="project-tag">{tech}</li>
+                <li key={i} className="project-tag" style={{color:"black"}}>{tech}</li>
               ))}
               {project.additionalTools?.map((tool, i) => (
                 <li key={`tool-${i}`} className="project-tag">{tool}</li>
