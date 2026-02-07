@@ -11,12 +11,12 @@ function Hero() {
         <div className="hero-text">
           <h1 className="hero-title">Hi, I’m Engineer Henry</h1>
           <p className="hero-intro">
-            I'm a Software Engineer and graphics designer focused on web and mobile development.
+            I'm a Software Engineer focused on web , systems engineering and mobile development .
             I build clean, scalable applications and enjoy turning ideas into polished products.
           </p>
           <span className="hero-tagline">Turning Code Into Constellations</span>
           <p className="hero-subtitle">
-            Full-Stack Developer · UI/UX (Figma) · Graphics Design 
+            Full-Stack Developer · UI/UX (Figma)
           </p>
           <a href="#projects" className="cta-button">
             See My Work
