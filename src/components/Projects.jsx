@@ -6,160 +6,90 @@ import "../styles/Projects.css";
 export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [activeCategory, setActiveCategory] = useState("all");
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollRef = useRef(null);
 
-  // Fetch projects and categories
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const [projectsRes, categoriesRes] = await Promise.all([
-          fetch(`${API_BASE}/api/projects`),
-          fetch(`${API_BASE}/api/categories`),
-        ]);
-
-        if (!projectsRes.ok || !categoriesRes.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const [projectsData, categoriesData] = await Promise.all([
-          projectsRes.json(),
-          categoriesRes.json(),
-        ]);
-
-        setProjects(projectsData);
-        setCategories(categoriesData);
-      } catch (err) {
-        setError(err.message);
-        setProjects([]);
-        setCategories([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    Promise.all([
+      fetch(`${API_BASE}/api/projects`).then(r => r.json()),
+      fetch(`${API_BASE}/api/categories`).then(r => r.json()),
+    ]).then(([projectsData, categoriesData]) => {
+      setProjects(projectsData);
+      setCategories(categoriesData);
+    });
   }, []);
 
   const filteredProjects =
     activeCategory === "all"
       ? projects
-      : projects.filter((p) => {
-          const catId = p.category?._id || p.category;
-          return String(catId) === String(activeCategory);
-        });
+      : projects.filter(p =>
+          String(p.category?._id || p.category) === String(activeCategory)
+        );
 
-  // Reset carousel index when category changes
   useEffect(() => {
     setCurrentIndex(0);
+    scrollRef.current?.scrollTo({ left: 0 });
   }, [activeCategory]);
 
-  const scrollToCard = (index) => {
+  const scrollTo = (index) => {
     const i = Math.max(0, Math.min(index, filteredProjects.length - 1));
     setCurrentIndex(i);
-    const el = scrollRef.current;
-    if (el) {
-      const card = el.querySelector(`[data-card-index="${i}"]`);
-      card?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-    }
+    scrollRef.current
+      ?.querySelector(`[data-index="${i}"]`)
+      ?.scrollIntoView({ behavior: "smooth", inline: "center" });
   };
 
-  // Update currentIndex on manual scroll
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const onScroll = () => {
-      const scrollLeft = el.scrollLeft;
-      const cardWidth = el.offsetWidth;
-      const index = Math.round(scrollLeft / cardWidth);
-      setCurrentIndex(Math.max(0, Math.min(index, filteredProjects.length - 1)));
-    };
-    el.addEventListener("scroll", onScroll);
-    return () => el.removeEventListener("scroll", onScroll);
-  }, [filteredProjects]);
-
-  if (loading) {
-    return (
-      <section id="projects" className="projects-section">
-        <h2 className="section-title">Projects</h2>
-        <div className="projects-loading">Loading projects...</div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section id="projects" className="projects-section">
-        <h2 className="section-title">Projects</h2>
-        <div className="projects-error">Unable to load projects.</div>
-      </section>
-    );
-  }
-
   return (
-    <section id="projects" className="projects-section">
+    <section className="projects-section" id="projects">
       <h2 className="section-title">Projects</h2>
-      <p className="section-subtitle">
-        Browse by category, explore with focus.
-      </p>
+      <p className="section-subtitle">One project at a time. Focused.</p>
 
-      {/* Category tabs */}
-      {categories.length > 0 && (
-        <div className="category-tabs">
+      <div className="category-tabs">
+        <button
+          className={`category-tab ${activeCategory === "all" ? "active" : ""}`}
+          onClick={() => setActiveCategory("all")}
+        >
+          All
+        </button>
+        {categories.map(cat => (
           <button
-            className={`category-tab ${activeCategory === "all" ? "active" : ""}`}
-            onClick={() => setActiveCategory("all")}
+            key={cat._id}
+            className={`category-tab ${activeCategory === cat._id ? "active" : ""}`}
+            onClick={() => setActiveCategory(cat._id)}
           >
-            All
+            {cat.name}
           </button>
-          {categories.map((cat) => (
-            <button
-              key={cat._id}
-              className={`category-tab ${activeCategory === cat._id ? "active" : ""}`}
-              onClick={() => setActiveCategory(cat._id)}
-            >
-              {cat.name}
-            </button>
-          ))}
-        </div>
-      )}
+        ))}
+      </div>
 
-      {/* Carousel */}
-      {filteredProjects.length === 0 ? (
-        <p className="projects-empty">No projects in this category yet.</p>
-      ) : (
+      {filteredProjects.length > 0 && (
         <div className="projects-carousel">
           <button
-            type="button"
             className="projects-carousel-btn projects-carousel-btn-prev"
-            onClick={() => scrollToCard(currentIndex - 1)}
-            aria-label="Previous project"
+            onClick={() => scrollTo(currentIndex - 1)}
           >
             ‹
           </button>
 
           <div className="projects-carousel-viewport" ref={scrollRef}>
             <div className="projects-carousel-track">
-              {filteredProjects.map((project, index) => (
+              {filteredProjects.map((project, i) => (
                 <article
                   key={project._id}
                   className="project-card"
-                  data-card-index={index}
+                  data-index={i}
                 >
                   <div className="project-image-container">
                     {project.images?.[0]?.url ? (
                       <img
                         src={project.images[0].url}
-                        alt={project.images[0]?.alt || project.title}
+                        alt={project.title}
                         className="project-image"
                       />
                     ) : (
                       <div className="project-image-placeholder">
-                        No image available
+                        No image
                       </div>
                     )}
                   </div>
@@ -167,7 +97,6 @@ export default function Projects() {
                   <div className="project-content">
                     <h3 className="project-title">{project.title}</h3>
 
-                    {/* Internal detail page */}
                     <Link
                       to={`/projects/${project.slug || project._id}`}
                       className="project-link"
@@ -175,13 +104,12 @@ export default function Projects() {
                       View project →
                     </Link>
 
-                    {/* Live project external link */}
                     {project.link && (
                       <a
                         href={project.link}
-                        className="project-link live-link"
                         target="_blank"
                         rel="noopener noreferrer"
+                        className="project-link live-link"
                       >
                         Live demo →
                       </a>
@@ -193,26 +121,11 @@ export default function Projects() {
           </div>
 
           <button
-            type="button"
             className="projects-carousel-btn projects-carousel-btn-next"
-            onClick={() => scrollToCard(currentIndex + 1)}
-            aria-label="Next project"
+            onClick={() => scrollTo(currentIndex + 1)}
           >
             ›
           </button>
-
-          {/* Pagination dots */}
-          <div className="projects-carousel-dots">
-            {filteredProjects.map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                className={`projects-dot ${currentIndex === index ? "active" : ""}`}
-                onClick={() => scrollToCard(index)}
-                aria-label={`Go to project ${index + 1}`}
-              />
-            ))}
-          </div>
         </div>
       )}
     </section>
