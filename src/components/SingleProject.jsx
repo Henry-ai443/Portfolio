@@ -46,7 +46,7 @@ export default function SingleProject() {
 
   return (
     <section className="single-project-section">
-      <Link to="/projects" className="back-link">← Back to Projects</Link>
+      <Link to="/" className="back-link">← Back to Projects</Link>
 
       <div className="project-images">
         {project.images?.map((img, i) => (
@@ -84,13 +84,13 @@ export default function SingleProject() {
         )}
 
         <div className="project-links">
-          {project.link && (
-            <a href={project.link} className="project-link" target="_blank" rel="noopener noreferrer">
+          {project.repoUrl && (
+            <a href={project.repoUrl} className="project-link" target="_blank" rel="noopener noreferrer">
               View repository →
             </a>
           )}
-          {project.liveLink && (
-            <a href={project.liveLink} className="project-link" target="_blank" rel="noopener noreferrer">
+          {project.link && (
+            <a href={project.link} className="project-link" target="_blank" rel="noopener noreferrer">
               Live demo →
             </a>
           )}
