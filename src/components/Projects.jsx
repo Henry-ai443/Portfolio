@@ -176,9 +176,9 @@ export default function Projects() {
                     </Link>
 
                     {/* Live project external link */}
-                    {project.liveLink && (
+                    {project.link && (
                       <a
-                        href={project.liveLink}
+                        href={project.link}
                         className="project-link live-link"
                         target="_blank"
                         rel="noopener noreferrer"
