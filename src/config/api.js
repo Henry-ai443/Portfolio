@@ -1,1 +1,1 @@
-export const API_BASE = import.meta.env.VITE_API_URL || "https://my-portfolio-api-czqj.onrender.com";
+export const API_BASE = import.meta.env.VITE_API_URL || "https://my-portfolio-api-qoov.onrender.com";
