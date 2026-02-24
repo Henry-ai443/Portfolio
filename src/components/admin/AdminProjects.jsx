@@ -122,7 +122,10 @@ export default function AdminProjects() {
           : [];
         const res = await fetch(`${API_BASE}/api/projects/${editingId}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...authHeaders(),
+          },
           body: JSON.stringify({
             title: formData.title.trim(),
             description: formData.description.trim(),

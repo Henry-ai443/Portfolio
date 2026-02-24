@@ -80,7 +80,8 @@
 
 .projects-carousel-viewport {
   width: 100%;
-  max-width: 900px;
+  max-width: 100%;
+  padding: 0 2rem;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
@@ -96,6 +97,8 @@
   display: flex;
   flex-direction: row;
   width: max-content;
+  gap: 1.25rem;
+  padding: 0.5rem 0;
 }
 
 /* =========================
@@ -103,14 +106,17 @@
 ========================= */
 
 .project-card {
-  flex: 0 0 100%;
-  max-width: 900px;
+  flex: 0 0 calc((100vw - 6rem) / 3);
+  max-width: calc((100vw - 6rem) / 3);
   background: #fff;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
   scroll-snap-align: center;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .project-card:hover {
@@ -124,7 +130,7 @@
 
 .project-image-container {
   width: 100%;
-  max-height: 420px;
+  height: 140px;
   background: #f3f4f6;
   overflow: hidden;
 }
@@ -141,7 +147,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: var(--text-dim);
 }
 
@@ -150,22 +156,27 @@
 ========================= */
 
 .project-content {
-  padding: 1.5rem;
+  padding: 0.875rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .project-title {
-  font-size: 1.4rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  margin-bottom: 0.75rem;
-  color: #1d4ed8;
+  margin-bottom: 0.4rem;
+  color: #000000;
+  line-height: 1.2;
 }
 
 .project-link {
   display: inline-block;
-  margin-top: 0.5rem;
+  margin-top: 0.35rem;
   font-weight: 500;
   color: #1d4ed8;
   text-decoration: none;
+  font-size: 0.8rem;
 }
 
 .project-link:hover {
@@ -173,7 +184,11 @@
 }
 
 .project-link.live-link {
-  margin-left: 1rem;
+  margin-left: 0.75rem;
+}
+
+.project-links-container {
+  margin-top: auto;
 }
 
 /* =========================
@@ -214,29 +229,30 @@
 @media (max-width: 768px) {
   .project-card {
     flex: 0 0 100vw;
+    max-width: 100vw;
     border-radius: 0;
   }
 
   .project-image-container {
-    max-height: 220px;
+    height: 180px;
   }
 
   .project-content {
-    padding: 1rem;
+    padding: 0.875rem;
   }
 
   .project-title {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   .project-link {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
   }
 
   .project-link.live-link {
     display: block;
     margin-left: 0;
-    margin-top: 0.3rem;
+    margin-top: 0.25rem;
   }
 
   .projects-carousel-btn {

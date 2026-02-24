@@ -95,25 +95,27 @@ export default function Projects() {
                   </div>
 
                   <div className="project-content">
-                    <h3 className="project-title">{project.title}</h3>
+                    <h3 className="project-title" style={{color:"blue"}}>{project.title}</h3>
 
-                    <Link
-                      to={`/projects/${project.slug || project._id}`}
-                      className="project-link"
-                    >
-                      View project →
-                    </Link>
-
-                    {project.link && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="project-link live-link"
+                    <div className="project-links-container">
+                      <Link
+                        to={`/projects/${project.slug || project._id}`}
+                        className="project-link"
                       >
-                        Live demo →
-                      </a>
-                    )}
+                        View project →
+                      </Link>
+
+                      {project.link && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="project-link live-link"
+                        >
+                          Live demo →
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </article>
               ))}
