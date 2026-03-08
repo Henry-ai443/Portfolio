@@ -12,7 +12,7 @@ function About() {
         <div className="about-content">
           <div className="about-text">
             <p>
-              I’m a passionate Software Engineer and graphics designer specializing in web and mobile development. I enjoy building sleek, modern applications and exploring new technologies to create innovative solutions.
+              I'm a software engineering student at Kisii University focused on building scalable web applications and backend systems. I enjoy developing solutions that solve real-world problems in areas like digital platforms, logistics, and agriculture technology. My main tools include React, Node.js, MongoDB, and cloud services.
             </p>
             <p>
               I love experimenting with frameworks like React, React Native, Node.js, and more. I also enjoy contributing to open-source projects and continuously improving my skills.

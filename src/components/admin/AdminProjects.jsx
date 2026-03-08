@@ -16,6 +16,7 @@ export default function AdminProjects() {
   function getEmptyForm() {
     return {
       title: "",
+      short_description: "",
       description: "",
       category: "",
       link: "",
@@ -61,6 +62,7 @@ export default function AdminProjects() {
     setEditingId(project._id);
     setFormData({
       title: project.title || "",
+      short_description: project.short_description || "",
       description: project.description || "",
       category: project.category?._id || project.category || "",
       link: project.link || "",
@@ -117,27 +119,35 @@ export default function AdminProjects() {
       const order = parseInt(formData.order, 10) || 0;
 
       if (editingId) {
-        const images = formData.imageUrls
-          ? parseList(formData.imageUrls).map((url) => ({ url, alt: "" }))
-          : [];
+        // For updates, use FormData to support file uploads
+        const form = new FormData();
+        form.append("title", formData.title.trim());
+        form.append("short_description", formData.short_description.trim());
+        form.append("description", formData.description.trim());
+        form.append("category", categoryId);
+        form.append("link", formData.link.trim());
+        form.append("repoUrl", formData.repoUrl.trim());
+        form.append("techStack", JSON.stringify(techStack));
+        form.append("additionalTools", JSON.stringify(additionalTools));
+        form.append("featured", formData.featured);
+        form.append("order", order);
+        
+        // Handle images - if imageUrls provided, use them; otherwise preserve existing
+        if (formData.imageUrls.trim()) {
+          form.append("imageUrls", JSON.stringify(parseList(formData.imageUrls).map((url) => ({ url, alt: "" }))));
+        }
+        
+        // Add new image files if provided
+        if (formData.imageFiles?.length) {
+          for (let i = 0; i < formData.imageFiles.length; i++) {
+            form.append("images", formData.imageFiles[i]);
+          }
+        }
+
         const res = await fetch(`${API_BASE}/api/projects/${editingId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            ...authHeaders(),
-          },
-          body: JSON.stringify({
-            title: formData.title.trim(),
-            description: formData.description.trim(),
-            category: categoryId,
-            link: formData.link.trim(),
-            repoUrl: formData.repoUrl.trim(),
-            techStack,
-            additionalTools,
-            featured: formData.featured,
-            order,
-            images,
-          }),
+          method: "PATCH",
+          headers: authHeaders(),
+          body: form,
         });
         handleAuthResponse(res);
         if (!res.ok) {
@@ -147,6 +157,7 @@ export default function AdminProjects() {
       } else {
         const form = new FormData();
         form.append("title", formData.title.trim());
+        form.append("short_description", formData.short_description.trim());
         form.append("description", formData.description.trim());
         form.append("category", categoryId);
         form.append("link", formData.link.trim());
@@ -223,6 +234,16 @@ export default function AdminProjects() {
                 placeholder="Project name"
               />
 
+              <label>Short Description *</label>
+              <textarea
+                name="short_description"
+                value={formData.short_description}
+                onChange={handleChange}
+                required
+                rows={2}
+                placeholder="1-2 sentence summary for project cards"
+              />
+
               <label>Description *</label>
               <textarea
                 name="description"
@@ -230,7 +251,7 @@ export default function AdminProjects() {
                 onChange={handleChange}
                 required
                 rows={4}
-                placeholder="Short description for the portfolio"
+                placeholder="Full project description for detail page"
               />
 
               <label>Category *</label>
@@ -298,11 +319,12 @@ export default function AdminProjects() {
                 Featured
               </label>
 
-              {!editingId && (
-                <>
-                  <label>Upload images</label>
-                  <input type="file" accept="image/*" multiple onChange={handleImageFiles} />
-                </>
+              <label>Upload images</label>
+              <input type="file" accept="image/*" multiple onChange={handleImageFiles} />
+              {editingId && (
+                <small className="admin-form-help">
+                  Upload new images to add to existing ones, or use Image URLs below to replace all images
+                </small>
               )}
 
               <label>Image URLs (one per line, or comma-separated)</label>

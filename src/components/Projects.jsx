@@ -10,6 +10,8 @@ export default function Projects() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollRef = useRef(null);
 
+  console.log(project.short_description)
+
   useEffect(() => {
     Promise.all([
       fetch(`${API_BASE}/api/projects`).then(r => r.json()),
@@ -96,14 +98,44 @@ export default function Projects() {
 
                   <div className="project-content">
                     <h3 className="project-title" style={{color:"blue"}}>{project.title}</h3>
+                    
+                    {project.short_description && (
+                      <p className="project-short-description">
+                        {project.short_description}
+                      </p>
+                    )}
+
+                    {(project.techStack?.length > 0 || project.additionalTools?.length > 0) && (
+                      <div className="project-tech-stack">
+                        <div className="project-tech-tags">
+                          {project.techStack?.slice(0, 3).map((tech, i) => (
+                            <span key={i} className="tech-tag">{tech}</span>
+                          ))}
+                          {project.additionalTools?.slice(0, 2).map((tool, i) => (
+                            <span key={`tool-${i}`} className="tech-tag">{tool}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     <div className="project-links-container">
                       <Link
                         to={`/projects/${project.slug || project._id}`}
                         className="project-link"
                       >
-                        View project →
+                        View Project
                       </Link>
+
+                      {project.repoUrl && (
+                        <a
+                          href={project.repoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="project-link github-link"
+                        >
+                          GitHub
+                        </a>
+                      )}
 
                       {project.link && (
                         <a
@@ -112,7 +144,7 @@ export default function Projects() {
                           rel="noopener noreferrer"
                           className="project-link live-link"
                         >
-                          Live demo →
+                          Live Demo
                         </a>
                       )}
                     </div>
