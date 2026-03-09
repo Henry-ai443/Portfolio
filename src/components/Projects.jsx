@@ -10,7 +10,7 @@ export default function Projects() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollRef = useRef(null);
 
-  console.log(project.short_description)
+
 
   useEffect(() => {
     Promise.all([
