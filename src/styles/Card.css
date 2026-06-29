@@ -1,0 +1,133 @@
+/* ===========================
+   Card Component Styles
+=========================== */
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Subtle background glow on hover */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    var(--glow-primary) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover {
+  border-color: var(--border-primary);
+  box-shadow: 0 8px 32px var(--glow-primary);
+  background: var(--bg-elevated);
+}
+
+.card:hover::before {
+  opacity: 0.15;
+}
+
+/* Lift effect on hover */
+.card.interactive:hover {
+  transform: translateY(-6px);
+}
+
+/* ===== Card Icon ===== */
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: rgba(0, 255, 157, 0.1);
+  border: 1.5px solid var(--border-primary);
+  border-radius: var(--radius);
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+}
+
+.card:hover .card-icon {
+  background: rgba(0, 255, 157, 0.15);
+  border-color: var(--border-hover);
+  box-shadow: 0 0 16px var(--glow-primary);
+}
+
+.card-icon svg {
+  width: 28px;
+  height: 28px;
+  color: var(--color-primary);
+  stroke-width: 1.5;
+}
+
+/* ===== Card Title ===== */
+.card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ===== Card Body/Content ===== */
+.card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.card-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .card {
+    padding: var(--space-lg);
+    gap: var(--space-md);
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .card-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .card-title {
+    font-size: var(--font-size-base);
+  }
+
+  .card-description {
+    font-size: var(--font-size-xs);
+  }
+
+  .card.interactive:hover {
+    transform: translateY(-3px);
+  }
+}
